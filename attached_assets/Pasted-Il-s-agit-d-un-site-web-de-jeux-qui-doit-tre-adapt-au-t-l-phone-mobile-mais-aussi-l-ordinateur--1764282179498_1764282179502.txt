@@ -1,0 +1,94 @@
+Il s'agit d'un site web de jeux qui doit être adapté au téléphone mobile mais aussi à l'ordinateur. Toutes les phrases sur le site doivent être en anglais.
+
+Le nom du jeu s'appelle Brand it !
+
+Lorsqu'on monte sur le site,
+
+la première page aura l'image que j'ai ajouté ci-dessous en arrière plan. Cette page va montrer le logo de Brand it ! animé en Reveal avec Effet 3D. Sur cette page sera afficher le bouton Play Game avec une animation en effet de Pulse 3D.
+
+Lorsqu'on clique sur le bouton Play Game, cela ouvre une deuxième petite page affichant les modes du jeu à choisir. Sur cette deuxième page, il va être écrit Choose Mode en 2D et affiché en dessous les modes chacun en bouton Solo , Team, Random avec une animation 3D Tilt Parallax.
+
+
+
+Lorsqu'on clique sur le bouton du mode Solo cela demande de choisir le niveau Easy affichant en dessous les niveaux Medium et Difficult verouillé.
+
+Le niveau Medium sera déverouillé et pourra être jouer si le joueur gagne le nombre de point réquis pour le niveau  Easy. 
+
+Le niveau Difficult sera déverouillé si le joueur a déjà joué et gagner le nombre de point réquis pour le niveau Medium.
+
+
+
+
+
+Le niveau Easy montre 6 cartes portant chacune une phrase lacunaire avec un troue demandant une couleur à remplir.
+
+Ce choix de couleur se fera parmi les 30 palettes de cartes couleurs ( Red, Dark Red, Blue, Dark Blue, Light Blue, Green, Dark Green, Yellow, Gold, Orange, Purple, Light Purple, Pink, Beige, Brown, Black, White, Grey, Silver, Neon, Green, Neon, Pink, #6B8E23, Mint Green, Teal, Coral, Burgundy, Navy, Sand )
+
+
+
+Si le joueur choisi une couleur correspondant à une couleur parmi les couleurs de la bonne réponse à la question  alors affiché le message "Right" en 3D sur la carte et donner un point. si son choix n'est pas parmi les  couleurs des réponses à la question alors affiché le message "Wrong" en 3D sur la carte  puis montrer la phrase de la bonne réponse et de l'explication
+
+Si le joueur avait choisi la bonne réponse alors lui donner la possibilité de voir la réponse à la question et la phrase d'explication.
+
+Chaque question dure 60s pour passer à la question suivante. Chaque bonne réponse donne 1 point. Si après avoir répondu aux 6 cartes portant chacune une phrase lacunaire le joueur à au moin 3 points alors passer au niveau Medium si non reprendre le niveau Easy.
+
+
+
+
+
+For this gardening brand, the ideal color would be ______!
+
+
+
+Bonne réponse = Green, Dark Green, Brown, Beige
+ Explication: Why? Green represents nature, dark green and beige evoke ecology and softness, brown recalls the earth and authenticity.
+
+
+
+For this brand of women's cosmetics, the ideal color would be ______!
+
+
+
+Bonne réponse = “Pink, Light Purple, Purple”
+Explanation: These colors are soft, elegant, and naturally appeal to a female audience.
+
+
+
+A brand selling luxury watches should NOT use the color ______!
+
+
+
+Bonne réponse = “Everything except Golden, Black, Dark colors”
+Explication: The world of luxury is very serious, so serious colors are required.
+
+
+
+For a sports company, the most logical color is ______!
+
+
+
+Bonne réponse = “Blue, Red, Dark Blue, Black”
+Explanation: Blue = reliability, red = energy, dark blue = seriousness, black = power.
+
+
+
+A children's store would definitely use ______!
+
+
+
+Bonne réponse = “Yellow, Orange, Pink, Light Purple”
+Explanation: These colors are bright, cheerful, and attract children's attention.
+
+
+
+This small organic café needs a color like ______!
+
+Bonne réponse = “Dark Green, Green, Brown, Beige”
+Explanation: Dark green and green evoke organic and natural, while brown and beige are reminiscent of coffee and earth.
+
+
+
+
+
+Ecris moi les codes de ce site web de jeu avec un design pro pour que je puisse l'exécuter dans mon visual code et générer le site
+
