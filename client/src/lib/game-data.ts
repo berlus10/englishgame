@@ -34,63 +34,173 @@ export const COLORS: ColorOption[] = [
   { name: "Sand", hex: "#C2B280" },
 ];
 
+export type QuestionType = "single" | "double";
+
 export type Question = {
   id: number;
+  level: "easy" | "medium" | "difficult";
   text: string;
-  correctColors: string[]; // Names of correct colors
+  type: QuestionType;
+  correctColors: string[]; // For single: list of valid colors. For double: flattened list of valid colors (logic handled in component)
+  validPairs?: string[][]; // For double: Specific valid pairs
   explanation: string;
+  points: number;
 };
 
 export const EASY_QUESTIONS: Question[] = [
   {
     id: 1,
+    level: "easy",
+    type: "single",
+    points: 1,
     text: "For this gardening brand, the ideal color would be ______!",
     correctColors: ["Green", "Dark Green", "Brown", "Beige"],
     explanation: "Why? Green represents nature, dark green and beige evoke ecology and softness, brown recalls the earth and authenticity.",
   },
   {
     id: 2,
+    level: "easy",
+    type: "single",
+    points: 1,
     text: "For this brand of women's cosmetics, the ideal color would be ______!",
     correctColors: ["Pink", "Light Purple", "Purple"],
     explanation: "These colors are soft, elegant, and naturally appeal to a female audience.",
   },
   {
     id: 3,
+    level: "easy",
+    type: "single",
+    points: 1,
     text: "A brand selling luxury watches should NOT use the color ______!",
-    correctColors: ["Golden", "Black", "Dark Blue", "Silver", "Navy", "Burgundy"], // Interpreted "Everything except Golden, Black, Dark colors" as identifying the dark/luxury colors is the goal? Wait, question is "should NOT use". 
-    // Re-reading prompt: "A brand selling luxury watches should NOT use the color ______!"
-    // Correct Answer = "Everything except Golden, Black, Dark colors"
-    // This implies the player must pick a NON-luxury color to be "Right" about what NOT to use.
-    // Let's list non-luxury colors as correct answers for "NOT use".
-    // "Serious colors are required" -> so we should avoid fun/bright colors.
-    // Correct answers (to avoid): Yellow, Orange, Neon Green, Neon Pink, Pink, Light Blue, Mint Green.
-    // Actually, let's stick to the prompt's logic. If the user picks "Yellow", that is a color a luxury brand should NOT use. So Yellow is a correct answer to the question.
-    explanation: "The world of luxury is very serious, so serious colors are required. Avoid bright, playful colors like Yellow or Neon.",
+    correctColors: ["Yellow", "Orange", "Neon Green", "Neon Pink", "Mint Green"], // Interpreted as non-serious/non-luxury colors
+    explanation: "The world of luxury is very serious, so serious colors are required.",
   },
   {
     id: 4,
+    level: "easy",
+    type: "single",
+    points: 1,
     text: "For a sports company, the most logical color is ______!",
     correctColors: ["Blue", "Red", "Dark Blue", "Black"],
     explanation: "Blue = reliability, red = energy, dark blue = seriousness, black = power.",
   },
   {
     id: 5,
+    level: "easy",
+    type: "single",
+    points: 1,
     text: "A children's store would definitely use ______!",
     correctColors: ["Yellow", "Orange", "Pink", "Light Purple"],
     explanation: "These colors are bright, cheerful, and attract children's attention.",
   },
   {
     id: 6,
+    level: "easy",
+    type: "single",
+    points: 1,
     text: "This small organic café needs a color like ______!",
     correctColors: ["Dark Green", "Green", "Brown", "Beige"],
     explanation: "Dark green and green evoke organic and natural, while brown and beige are reminiscent of coffee and earth.",
   },
 ];
 
-// Fix for Question 3 logic based on prompt text:
-// "Bonne réponse = Everything except Golden, Black, Dark colors"
-// This means any color EXCEPT those is the correct answer to "What should NOT be used".
-const LUXURY_COLORS = ["Gold", "Black", "Dark Blue", "Navy", "Burgundy", "Silver", "Dark Green", "Dark Red"];
-const NON_LUXURY_COLORS = COLORS.filter(c => !LUXURY_COLORS.includes(c.name)).map(c => c.name);
+export const MEDIUM_QUESTIONS: Question[] = [
+  {
+    id: 7,
+    level: "medium",
+    type: "single",
+    points: 2,
+    text: "For this cozy coffee, the ideal color would be ______!",
+    correctColors: ["Brown", "Beige", "Dark Red"],
+    explanation: "These colors create a warm and welcoming atmosphere.",
+  },
+  {
+    id: 8,
+    level: "medium",
+    type: "single",
+    points: 2,
+    text: "This brand of educational games for children should be ______ in color!",
+    correctColors: ["Yellow", "Orange", "Light Purple"],
+    explanation: "Cheerful and stimulating colors that attract children's attention.",
+  },
+  {
+    id: 9,
+    level: "medium",
+    type: "single",
+    points: 2,
+    text: "A brand of high-tech electronic products would choose ______!",
+    correctColors: ["Purple", "Light Purple", "Dark Blue"],
+    explanation: "These colors give an impression of modernity, technology, and seriousness.",
+  },
+];
 
-EASY_QUESTIONS[2].correctColors = NON_LUXURY_COLORS;
+export const DIFFICULT_QUESTIONS: Question[] = [
+  {
+    id: 10,
+    level: "difficult",
+    type: "double",
+    points: 3,
+    text: "A nightclub with a techno atmosphere would need to use _______ and _______!",
+    correctColors: ["Neon Pink", "Neon Green", "Black"], // Any combination of these
+    validPairs: [
+        ["Neon Pink", "Neon Green"],
+        ["Neon Pink", "Black"],
+        ["Neon Green", "Black"],
+        ["Neon Green", "Neon Pink"],
+        ["Black", "Neon Pink"],
+        ["Black", "Neon Green"]
+    ],
+    explanation: "Neon colours reflect the energy and light of techno parties, while black adds a chic, urban touch.",
+  },
+  {
+    id: 11,
+    level: "difficult",
+    type: "double",
+    points: 3,
+    text: "A trampoline park brand should use the colours ________ and ________!",
+    correctColors: [],
+    validPairs: [
+        ["Orange", "Blue"],
+        ["Blue", "Orange"],
+        ["Yellow", "Green"],
+        ["Green", "Yellow"],
+        ["Neon Pink", "Light Blue"],
+        ["Light Blue", "Neon Pink"]
+    ],
+    explanation: "These combinations are dynamic, cheerful and evoke movement, energy and fun, perfect for a trampoline park.",
+  },
+  {
+    id: 12,
+    level: "difficult",
+    type: "double",
+    points: 3,
+    text: "A digital school like MyDigitalSchool must use ______ and ______!",
+    correctColors: [],
+    validPairs: [
+        ["Blue", "White"],
+        ["White", "Blue"],
+        ["Light Blue", "White"],
+        ["White", "Light Blue"]
+    ],
+    explanation: "Blue inspires confidence and seriousness, while light blue conveys modernity and technology, ideal for a digital school.",
+  },
+  {
+    id: 13,
+    level: "difficult",
+    type: "double",
+    points: 3,
+    text: "A video game company that makes horror games must use the colours _________ and _________!",
+    correctColors: [],
+    validPairs: [
+        ["Black", "Red"],
+        ["Red", "Black"],
+        ["Dark Red", "Purple"],
+        ["Purple", "Dark Red"],
+        ["Black", "Dark Blue"],
+        ["Dark Blue", "Black"]
+    ],
+    explanation: "Black creates a dark and disturbing atmosphere, red or dark red evokes danger and tension, purple or dark blue adds a mysterious touch.",
+  },
+];
+
+export const ALL_QUESTIONS = [...EASY_QUESTIONS, ...MEDIUM_QUESTIONS, ...DIFFICULT_QUESTIONS];

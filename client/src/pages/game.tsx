@@ -1,26 +1,53 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
-import { EASY_QUESTIONS, COLORS, Question } from "@/lib/game-data";
+import { Link, useSearch } from "wouter";
+import { EASY_QUESTIONS, MEDIUM_QUESTIONS, DIFFICULT_QUESTIONS, ALL_QUESTIONS, COLORS, Question } from "@/lib/game-data";
 import { cn } from "@/lib/utils";
-import { Check, X, Timer, ArrowRight, RotateCcw } from "lucide-react";
-import background from "@assets/generated_images/abstract_modern_3d_geometric_background_for_a_game.png";
+import { Timer, ArrowRight, RotateCcw, Trophy, ArrowLeft, Check } from "lucide-react";
+import background from "@assets/fond_site_1764295615694.png";
+import { useAtom } from "jotai";
+import { unlockedLevelsAtom } from "@/lib/store";
+import confetti from "canvas-confetti";
 
 const TIMER_DURATION = 60;
 
 export default function Game() {
+  const search = useSearch();
+  const params = new URLSearchParams(search);
+  const level = params.get("level") || params.get("mode") || "easy"; // Support both param styles
+  
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [selectedColorName, setSelectedColorName] = useState<string | null>(null);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [gameStatus, setGameStatus] = useState<'playing' | 'finished'>('playing');
+  
+  const [, setUnlockedLevels] = useAtom(unlockedLevelsAtom);
 
-  const currentQuestion = EASY_QUESTIONS[currentQuestionIndex];
-
+  // Initialize Questions based on Level
   useEffect(() => {
-    if (gameStatus === 'finished' || isAnswered) return;
+    let qs: Question[] = [];
+    if (level === "random") {
+      qs = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5);
+    } else if (level === "medium") {
+      qs = MEDIUM_QUESTIONS;
+    } else if (level === "difficult") {
+      qs = DIFFICULT_QUESTIONS;
+    } else {
+      qs = EASY_QUESTIONS;
+    }
+    setQuestions(qs);
+    handleRestart();
+  }, [level]);
+
+  const currentQuestion = questions[currentQuestionIndex];
+
+  // Timer Logic
+  useEffect(() => {
+    if (gameStatus === 'finished' || isAnswered || !currentQuestion) return;
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -33,7 +60,7 @@ export default function Game() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [gameStatus, isAnswered]);
+  }, [gameStatus, isAnswered, currentQuestion]);
 
   const handleTimeUp = () => {
     setIsAnswered(true);
@@ -41,28 +68,92 @@ export default function Game() {
   };
 
   const handleColorSelect = (colorName: string) => {
-    if (isAnswered) return;
-    
-    setSelectedColorName(colorName);
-    const isRight = currentQuestion.correctColors.includes(colorName);
+    if (isAnswered || !currentQuestion) return;
+
+    // Toggle logic for double selection
+    if (currentQuestion.type === "double") {
+      let newSelection = [...selectedColors];
+      if (newSelection.includes(colorName)) {
+        newSelection = newSelection.filter(c => c !== colorName);
+      } else {
+        if (newSelection.length < 2) {
+          newSelection.push(colorName);
+        }
+      }
+      setSelectedColors(newSelection);
+
+      // Auto-submit if 2 selected
+      if (newSelection.length === 2) {
+        checkAnswer(newSelection);
+      }
+    } else {
+      // Single selection logic
+      setSelectedColors([colorName]);
+      checkAnswer([colorName]);
+    }
+  };
+
+  const checkAnswer = (selections: string[]) => {
+    if (!currentQuestion) return;
+
+    let isRight = false;
+
+    if (currentQuestion.type === "double") {
+      // Check if the pair exists in validPairs
+      // Normalize sorting to compare sets
+      if (currentQuestion.validPairs) {
+        const sortedSelection = [...selections].sort().join(",");
+        isRight = currentQuestion.validPairs.some(pair => 
+          [...pair].sort().join(",") === sortedSelection
+        );
+      }
+    } else {
+      // Single check
+      isRight = currentQuestion.correctColors.includes(selections[0]);
+    }
+
     setIsCorrect(isRight);
     setIsAnswered(true);
     
     if (isRight) {
-      setScore((prev) => prev + 1);
+      setScore((prev) => prev + currentQuestion.points);
     }
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < EASY_QUESTIONS.length - 1) {
+    if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setIsAnswered(false);
       setIsCorrect(false);
-      setSelectedColorName(null);
+      setSelectedColors([]);
       setTimeLeft(TIMER_DURATION);
     } else {
-      setGameStatus('finished');
+      finishGame();
     }
+  };
+
+  const finishGame = () => {
+    setGameStatus('finished');
+    
+    // Unlock Logic
+    if (level === "easy" && score + (isCorrect ? currentQuestion.points : 0) >= 3) {
+      setUnlockedLevels(prev => Array.from(new Set([...prev, "medium"])));
+      triggerConfetti();
+    } else if (level === "medium" && score + (isCorrect ? currentQuestion.points : 0) >= 4) {
+      setUnlockedLevels(prev => Array.from(new Set([...prev, "difficult"])));
+      triggerConfetti();
+    } else if (level === "difficult" && score + (isCorrect ? currentQuestion.points : 0) >= 9) {
+      triggerConfetti();
+    }
+  };
+
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444']
+    });
   };
 
   const handleRestart = () => {
@@ -71,12 +162,44 @@ export default function Game() {
     setTimeLeft(TIMER_DURATION);
     setIsAnswered(false);
     setIsCorrect(false);
-    setSelectedColorName(null);
+    setSelectedColors([]);
     setGameStatus('playing');
   };
 
+  if (!currentQuestion) return <div className="bg-black h-screen w-full text-white flex items-center justify-center">Loading...</div>;
+
   if (gameStatus === 'finished') {
-    const passed = score >= 3;
+    let passed = false;
+    let message = "Level Failed";
+    let subMessage = "";
+    let nextLink = "";
+    let nextLabel = "Continue";
+
+    if (level === "easy") {
+      passed = score >= 3;
+      message = passed ? "Level Complete!" : "Try Again";
+      subMessage = passed ? "Medium Level Unlocked!" : "You need at least 3 points.";
+      nextLink = "/level-select";
+    } else if (level === "medium") {
+      passed = score >= 4;
+      message = passed ? "Level Complete!" : "Try Again";
+      subMessage = passed ? "Difficult Level Unlocked!" : "You need at least 4 points.";
+      nextLink = "/level-select";
+    } else if (level === "difficult") {
+      passed = score >= 9;
+      message = passed ? "Congratulations Champion!" : "Try Again";
+      subMessage = passed ? "You are a color master." : "You need at least 9 points.";
+      nextLink = "/";
+      nextLabel = "Restart Game";
+    } else {
+      // Random mode
+      passed = true;
+      message = "Game Over";
+      subMessage = `Final Score: ${score}`;
+      nextLink = "/mode-select";
+      nextLabel = "Back to Modes";
+    }
+
     return (
       <div className="relative min-h-screen w-full flex items-center justify-center bg-black text-white p-4">
          <div
@@ -91,29 +214,44 @@ export default function Game() {
         <motion.div 
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="relative z-10 max-w-lg w-full bg-black/80 border border-white/10 rounded-2xl p-8 backdrop-blur-md text-center"
+          className="relative z-10 max-w-lg w-full bg-black/80 border border-white/10 rounded-2xl p-8 backdrop-blur-md text-center shadow-2xl"
         >
-          <h2 className="font-display text-4xl font-bold mb-4">{passed ? "Level Complete!" : "Level Failed"}</h2>
-          <p className="text-xl mb-8 text-white/70">You scored {score} out of {EASY_QUESTIONS.length}</p>
+          {passed && level === "difficult" && (
+            <div className="flex justify-center mb-6">
+               <motion.div
+                 animate={{ rotateY: 360 }}
+                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+               >
+                 <Trophy className="w-24 h-24 text-yellow-400 drop-shadow-[0_0_30px_rgba(250,204,21,0.6)]" />
+               </motion.div>
+            </div>
+          )}
+
+          <h2 className="font-display text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">{message}</h2>
+          <p className="text-xl mb-2 font-bold text-primary">Score: {score}</p>
+          <p className="text-white/60 mb-8">{subMessage}</p>
           
           {passed ? (
             <div className="space-y-4">
-              <p className="text-emerald-400 font-bold text-lg">Medium Level Unlocked!</p>
-              <Link href="/level-select">
-                 <button className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold uppercase tracking-wider transition-colors">
-                   Continue
+              <Link href={nextLink}>
+                 <button className="w-full py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl font-bold uppercase tracking-wider transition-all transform hover:scale-105 shadow-lg shadow-emerald-900/20">
+                   {nextLabel}
                  </button>
               </Link>
             </div>
           ) : (
             <div className="space-y-4">
-              <p className="text-red-400">You need at least 3 points to proceed.</p>
               <button 
                 onClick={handleRestart}
                 className="w-full py-4 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
               >
                 <RotateCcw className="w-5 h-5" /> Try Again
               </button>
+              <Link href="/level-select">
+                <button className="w-full py-4 text-white/50 hover:text-white transition-colors text-sm uppercase tracking-wider">
+                  Exit Level
+                </button>
+              </Link>
             </div>
           )}
         </motion.div>
@@ -136,11 +274,11 @@ export default function Game() {
       {/* Sidebar / Topbar stats */}
       <div className="relative z-10 w-full md:w-64 bg-black/50 border-b md:border-b-0 md:border-r border-white/10 p-6 flex flex-row md:flex-col justify-between items-center md:items-start backdrop-blur-md">
         <div>
-          <Link href="/level-select" className="text-xs text-white/40 uppercase tracking-widest hover:text-white transition-colors mb-4 block">
-            ← Exit
+          <Link href={level === "random" ? "/mode-select" : "/level-select"} className="text-xs text-white/40 uppercase tracking-widest hover:text-white transition-colors mb-4 flex items-center gap-1">
+            <ArrowLeft className="w-3 h-3" /> Exit
           </Link>
-          <h2 className="font-display text-xl font-bold text-white mb-1">Easy Level</h2>
-          <p className="text-sm text-white/50">Question {currentQuestionIndex + 1} / {EASY_QUESTIONS.length}</p>
+          <h2 className="font-display text-xl font-bold text-white mb-1 capitalize">{level} Level</h2>
+          <p className="text-sm text-white/50">Question {currentQuestionIndex + 1} / {questions.length}</p>
         </div>
 
         <div className="flex items-center gap-4 md:flex-col md:items-start md:gap-8 md:mt-12 w-full">
@@ -174,15 +312,34 @@ export default function Game() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
+           <div className="flex items-center gap-2 mb-4">
+              <span className="px-2 py-1 bg-white/10 rounded text-xs uppercase tracking-wider text-white/50 border border-white/5">
+                 {currentQuestion.points} Points
+              </span>
+              {currentQuestion.type === "double" && (
+                 <span className="px-2 py-1 bg-primary/20 rounded text-xs uppercase tracking-wider text-primary border border-primary/20">
+                    Select 2 Colors
+                 </span>
+              )}
+           </div>
+
           <h1 className="text-2xl md:text-4xl font-bold leading-tight text-white drop-shadow-md">
             {currentQuestion.text.split("______").map((part, i, arr) => (
               <span key={i}>
                 {part}
                 {i < arr.length - 1 && (
-                  <span className="inline-block w-32 border-b-4 border-white/30 mx-2 align-bottom relative top-1" />
+                  <span className={cn(
+                    "inline-block border-b-4 mx-2 align-bottom relative top-1 transition-colors duration-300",
+                     selectedColors[i] ? "w-auto border-primary text-primary px-2" : "w-32 border-white/30"
+                  )}>
+                    {selectedColors[i] ? (
+                      <span className="text-2xl">{selectedColors[i]}</span>
+                    ) : ""}
+                  </span>
                 )}
               </span>
             ))}
+             {/* Handle single hole but already filled visually above? No, simpler approach below for text rendering */}
           </h1>
         </motion.div>
 
@@ -207,26 +364,41 @@ export default function Game() {
 
         {/* Color Grid */}
         <div className={cn(
-          "grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-10 gap-3 md:gap-4 flex-1 overflow-y-auto pb-24",
+          "grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-10 gap-3 md:gap-4 flex-1 overflow-y-auto pb-24 content-start",
           isAnswered && "pointer-events-none opacity-50 blur-[1px] transition-all duration-500"
         )}>
-          {COLORS.map((color) => (
-            <motion.button
-              key={color.name}
-              whileHover={{ scale: 1.1, zIndex: 10 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleColorSelect(color.name)}
-              className="aspect-square rounded-lg shadow-lg relative group border border-white/10"
-              style={{ backgroundColor: color.hex }}
-            >
-              <span className="sr-only">{color.name}</span>
-              
-              {/* Tooltip on hover */}
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none border border-white/20">
-                {color.name}
-              </div>
-            </motion.button>
-          ))}
+          {COLORS.map((color) => {
+            const isSelected = selectedColors.includes(color.name);
+            return (
+              <motion.button
+                key={color.name}
+                whileHover={{ scale: 1.1, zIndex: 10 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleColorSelect(color.name)}
+                className={cn(
+                  "aspect-square rounded-lg shadow-lg relative group border transition-all duration-200",
+                  isSelected ? "border-4 border-white ring-2 ring-primary z-10 scale-105" : "border-white/10"
+                )}
+                style={{ backgroundColor: color.hex }}
+              >
+                <span className="sr-only">{color.name}</span>
+                
+                {/* Checkmark indicator for selection */}
+                {isSelected && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                     <Check className={cn("w-8 h-8 drop-shadow-md", 
+                       ["White", "Yellow", "Beige", "Silver", "Light Blue", "Pink", "Neon Green", "Mint Green", "Sand", "Light Purple"].includes(color.name) ? "text-black" : "text-white"
+                     )} />
+                  </div>
+                )}
+
+                {/* Tooltip on hover */}
+                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none border border-white/20">
+                  {color.name}
+                </div>
+              </motion.button>
+            );
+          })}
         </div>
 
         {/* Explanation Panel (Bottom Sheet style) */}
@@ -242,7 +414,11 @@ export default function Game() {
                  <div className="flex-1">
                     <h3 className="font-display text-lg text-white/50 mb-1 uppercase tracking-wider">Answer & Explanation</h3>
                     <p className="text-white text-lg md:text-xl mb-2">
-                      <span className="font-bold text-primary">Correct:</span> {currentQuestion.correctColors.join(", ")}
+                      <span className="font-bold text-primary">Correct:</span> {
+                        currentQuestion.type === "double" && currentQuestion.validPairs 
+                          ? "See explanation for valid pairs." 
+                          : currentQuestion.correctColors.join(", ")
+                      }
                     </p>
                     <p className="text-white/80 leading-relaxed">
                       {currentQuestion.explanation}

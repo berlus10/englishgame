@@ -1,8 +1,8 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Card3D } from "@/components/ui/3d-card";
-import { User, Users, Shuffle } from "lucide-react";
-import background from "@assets/generated_images/abstract_modern_3d_geometric_background_for_a_game.png";
+import { User, Users, Shuffle, ArrowLeft } from "lucide-react";
+import background from "@assets/fond_site_1764295615694.png";
 
 export default function ModeSelect() {
   return (
@@ -17,6 +17,8 @@ export default function ModeSelect() {
           opacity: 0.3,
         }}
       />
+      
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/50 to-black" />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4">
         <motion.h2 
@@ -27,7 +29,7 @@ export default function ModeSelect() {
           Choose Mode
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl px-4 mb-12">
           {/* Solo Mode */}
           <div className="h-64 md:h-80">
             <Link href="/level-select">
@@ -51,14 +53,22 @@ export default function ModeSelect() {
 
           {/* Random Mode */}
           <div className="h-64 md:h-80">
-            <Card3D className="bg-gradient-to-br from-green-900/40 to-green-600/10 border-green-500/30 opacity-80 grayscale-[0.5]">
-              <Shuffle className="w-16 h-16 mb-6 text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]" />
-              <h3 className="font-display text-3xl font-bold mb-2">Random</h3>
-              <p className="text-green-200/70 text-center">Unexpected challenges</p>
-              <div className="absolute top-4 right-4 px-2 py-1 bg-black/50 rounded text-xs text-white/50 border border-white/10">Coming Soon</div>
-            </Card3D>
+            <Link href="/game?mode=random">
+              <Card3D className="bg-gradient-to-br from-green-900/40 to-green-600/10 border-green-500/30">
+                <Shuffle className="w-16 h-16 mb-6 text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]" />
+                <h3 className="font-display text-3xl font-bold mb-2">Random</h3>
+                <p className="text-green-200/70 text-center">Unexpected challenges</p>
+              </Card3D>
+            </Link>
           </div>
         </div>
+
+        <Link href="/">
+          <button className="group flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 transition-all">
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-display tracking-wider">Back</span>
+          </button>
+        </Link>
       </div>
     </div>
   );

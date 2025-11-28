@@ -1,0 +1,191 @@
+Il s'agit d'un site web de jeux qui doit être adapté au téléphone mobile et aussi à l'ordinateur. Toutes les phrases sur le site doivent être en anglais.
+
+Le nom du jeu s'appelle Brand it !
+
+Lorsqu'on monte sur le site,
+
+la première page aura en arrière plan avec une animation pro de jeu  l'image que j'ai joint en pièce. Cette page va montrer le logo de Brand it ! animé en Reveal avec Effet 3D et en dessous du logo une phrase décrivant brièvement le but du jeu. Ecris la phrase avec une animation en effet de Typewriter, voici la phrase de présentation "Cher Designer, ce jeu vise à t'apprendre à choisir les couleurs pour tes design en tenant compte du contexte du domaine d'activité, prêt ? Let's Go!".  Sur cette page sera afficher le bouton Play Game avec une animation en effet de Pulse 3D.
+
+Lorsqu'on clique sur le bouton Play Game, cela ouvre une deuxième petite page affichant les modes du jeu à choisir. Sur cette deuxième page, il va être écrit Choose Mode en 2D et affiché en dessous les modes chacun en bouton Solo , Team, Random avec une animation 3D Tilt Parallax. sur cette page il y aura un petit bouton "retour" qui ramènera à la première page si on clique sur cela.
+
+
+
+Lorsqu'on clique sur le bouton du mode Solo cela demande de choisir le niveau Easy affichant en dessous les niveaux Medium et Difficult verouillé.
+
+Le niveau Medium sera déverouillé et pourra être jouer si le joueur gagne le nombre de point réquis pour le niveau  Easy. 
+
+Le niveau Difficult sera déverouillé et pour être jouer si le joueur a déjà joué et gagner le nombre de point réquis pour le niveau Medium.
+
+
+
+Lorsqu'on clique sur le bouton du mode Random cela commence à jouer en montrant chacune des cartes portant phrase lacunaire des niveau Easy , Medium , Difficult mais dans un ordre aléatoire et les bonnes réponses donnent les points correspondant aux cartes de chaque niveau Easy, Medium , Difficult. Chaque carte porte les 30 palettes de cartes couleurs comme sur chaque niveau Easy, Medium ou  Difficult et le choix des couleurs se fera comme sa se fait sur chaque niveau Easy, Medium ,  Difficult. Afficher la bonne réponse et l'explication en cas de mauvais  ou de bonne réponse comme sa se fait les autres niveau Easy, Medium ,  Difficult. La seconde par carte sera la même comme sur chaque niveau. En jouant dans le mode Random, si le joueur totalise un score de 12 points afficher ce message  " Courage, tu y es presque" avant de montrer la carte suivante jusqu'à ce qu'il termine toutes les cartes. Si à la fin le nombre total de point total est moin de ou égale à 10 points afficher le message "You lost" , si le nombre totale de point est entre 10 et 16 points affiché le message "tu peux mieux faire" , si c'est entre 16 et 24 points affiché le message "Congratulations, you win" .
+
+
+
+Le niveau Easy montre 6 cartes portant chacune une phrase lacunaire avec un troue demandant une couleur à remplir.
+
+Ce choix de couleur se fera parmi les 30 palettes de cartes couleurs ( Red, Dark Red, Blue, Dark Blue, Light Blue, Green, Dark Green, Yellow, Gold, Orange, Purple, Light Purple, Pink, Beige, Brown, Black, White, Grey, Silver, Neon, Green, Neon, Pink, #6B8E23, Mint Green, Teal, Coral, Burgundy, Navy, Sand )
+
+
+
+Si le joueur choisi une couleur correspondant à une couleur parmi les couleurs de la bonne réponse à la question  alors affiché le message "Right" en 3D sur la carte et donner un point. si son choix n'est pas parmi les  couleurs des réponses à la question alors affiché le message "Wrong" en 3D sur la carte  puis montrer la phrase de la bonne réponse et de l'explication
+
+Si le joueur avait choisi la bonne réponse alors lui donner la possibilité de voir la réponse à la question et la phrase d'explication.
+
+Chaque question dure 60s pour passer à la question suivante. Chaque bonne réponse donne 1 point. Si après avoir répondu aux 6 cartes portant chacune une phrase lacunaire le joueur à au moin 3 points alors passer au niveau Medium si non reprendre le niveau Easy.
+
+
+
+
+
+For this gardening brand, the ideal color would be ______!
+
+
+
+Bonne réponse = Green, Dark Green, Brown, Beige
+ Explication: Why? Green represents nature, dark green and beige evoke ecology and softness, brown recalls the earth and authenticity.
+
+
+
+For this brand of women's cosmetics, the ideal color would be ______!
+
+
+
+Bonne réponse = “Pink, Light Purple, Purple”
+Explanation: These colors are soft, elegant, and naturally appeal to a female audience.
+
+
+
+A brand selling luxury watches should NOT use the color ______!
+
+
+
+Bonne réponse = “Everything except Golden, Black, Dark colors”
+Explication: The world of luxury is very serious, so serious colors are required.
+
+
+
+For a sports company, the most logical color is ______!
+
+
+
+Bonne réponse = “Blue, Red, Dark Blue, Black”
+Explanation: Blue = reliability, red = energy, dark blue = seriousness, black = power.
+
+
+
+A children's store would definitely use ______!
+
+
+
+Bonne réponse = “Yellow, Orange, Pink, Light Purple”
+Explanation: These colors are bright, cheerful, and attract children's attention.
+
+
+
+This small organic café needs a color like ______!
+
+Bonne réponse = “Dark Green, Green, Brown, Beige”
+Explanation: Dark green and green evoke organic and natural, while brown and beige are reminiscent of coffee and earth.
+
+
+
+
+
+
+
+Le niveau Medium montre 3 cartes portant chacune une phrase lacunaire avec un troue demandant une couleur à remplir.
+
+Ce choix de couleur se fera parmi les 30 palettes de cartes couleurs ( Red, Dark Red, Blue, Dark Blue, Light Blue, Green, Dark Green, Yellow, Gold, Orange, Purple, Light Purple, Pink, Beige, Brown, Black, White, Grey, Silver, Neon, Green, Neon, Pink, #6B8E23, Mint Green, Teal, Coral, Burgundy, Navy, Sand )
+
+
+
+Si le joueur choisi une couleur correspondant à une couleur parmi les couleurs de la bonne réponse à la question  alors affiché le message "Right" en 3D sur la carte et donner deux points. si son choix n'est pas parmi les  couleurs des réponses à la question alors affiché le message "Wrong" en 3D sur la carte  puis montrer la phrase de la bonne réponse et de l'explication
+
+Si le joueur avait choisi la bonne réponse alors lui donner la possibilité de voir la réponse à la question et la phrase d'explication.
+
+Chaque question dure 60s pour passer à la question suivante. Chaque bonne réponse donne 2 point. Si après avoir répondu aux 3 cartes portant chacune une phrase lacunaire le joueur à au moin 4 points alors passer au niveau Difficult si non reprendre le niveau Medium.
+
+Voici les phrases à mettre pour le niveau Medium ci-dessous:
+
+
+
+For this cozy coffee, the ideal color would be ______!
+
+Bonne réponse= “Brown, Beige, Dark Red”
+Explanation: These colors create a warm and welcoming atmosphere.
+
+
+
+This brand of educational games for children should be ______ in color!
+
+Bonne réponse= “Yellow, Orange, Light Purple”
+Explanation: Cheerful and stimulating colors that attract children's attention.
+
+
+
+A brand of high-tech electronic products would choose ______!
+
+Bonne réponse= “Purple, Light Purple, Dark Blue”
+Explanation: These colors give an impression of modernity, technology, and seriousness.
+
+
+
+
+
+Le niveau Difficult montre 4 cartes portant chacune une phrase lacunaire avec deux troues demandant une couleur à remplir dans chacun des troues.
+
+Ce choix de couleur se fera parmi les 30 palettes de cartes couleurs ( Red, Dark Red, Blue, Dark Blue, Light Blue, Green, Dark Green, Yellow, Gold, Orange, Purple, Light Purple, Pink, Beige, Brown, Black, White, Grey, Silver, Neon, Green, Neon, Pink, #6B8E23, Mint Green, Teal, Coral, Burgundy, Navy, Sand )
+
+
+
+Le joueur ne peut choisir qu'une couleur par troue dans la phrase lacunaire. 
+
+Le joueur ne peut pas choisi une même couleur pour les deux troues de la phrase lacunaire.
+
+Si le joueur choisi ses couleurs remplissant les deux troues , si les deux couleurs choisi correspondent à deux couleurs parmi les couleurs de la bonne réponse à la question  alors affiché le message "Right" en 3D sur la carte et donner trois points. si l'un de ses deux choix de couleur n'est pas parmi les  couleurs des réponses à la question alors affiché le message "Wrong" en 3D sur la carte  puis montrer la phrase de la bonne réponse et de l'explication
+
+Si le joueur avait choisi la bonne réponse alors lui donner la possibilité de voir la réponse à la question et la phrase d'explication.
+
+Chaque question dure 60s pour passer à la question suivante. Chaque bonne réponse donne 3 points. Si après avoir répondu aux 4 cartes portant chacune une phrase lacunaire le joueur à au moin 9 points alors afficher une petite case affichant le message: "Congratulations champion" avec une icône de coupe avec une animation brillant. Puis afficher le bouton "Restart" qui renvoi à la première page du site. 
+
+Voici les phrases à mettre pour le niveau Difficult ci-dessous:
+
+
+
+A nightclub with a techno atmosphere would need to use _______ and _______!
+
+Bonne réponse = ‘Neon Pink, Neon Green, Black’
+
+Explanation: Neon colours reflect the energy and light of techno parties, while black adds a chic, urban touch.
+
+
+
+A trampoline park brand should use the colours ________ and ________!
+
+Bonne réponse = ‘Orange + Blue, Yellow + Green, Neon Pink + Light Blue’
+Explanation: These combinations are dynamic, cheerful and evoke movement, energy and fun, perfect for a trampoline park.
+
+
+
+A digital school like MyDigitalSchool must use ______ and ______!
+
+Bonne réponse = ‘Blue + White, Light Blue + White’
+Explanation: Blue inspires confidence and seriousness, while light blue conveys modernity and technology, ideal for a digital school.
+
+
+
+A video game company that makes horror games must use the colours _________ and _________!
+
+Bonne réponse = ‘Black + Red, Dark Red + Purple, Black + Dark Blue’
+Explanation: Black creates a dark and disturbing atmosphere, red or dark red evokes danger and tension, purple or dark blue adds a mysterious touch.
+
+
+
+
+
+
+
+
+
+Ecris moi les codes de ce site web de jeu avec un design pro pour que je puisse l'exécuter dans mon visual code et générer le site pour l'héberger gratuitement.
