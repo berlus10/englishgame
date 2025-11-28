@@ -4,7 +4,7 @@ import { Link, useSearch } from "wouter";
 import { EASY_QUESTIONS, MEDIUM_QUESTIONS, DIFFICULT_QUESTIONS, ALL_QUESTIONS, COLORS, Question } from "@/lib/game-data";
 import { cn } from "@/lib/utils";
 import { Timer, ArrowRight, RotateCcw, Trophy, ArrowLeft, Check } from "lucide-react";
-import background from "@assets/fond_site_1764295615694.png";
+import background from "@assets/generated_images/premium_dark_abstract_background_with_subtle_gradients_and_mesh_texture.png";
 import { useAtom } from "jotai";
 import { unlockedLevelsAtom } from "@/lib/store";
 import confetti from "canvas-confetti";
@@ -364,7 +364,7 @@ export default function Game() {
 
         {/* Color Grid */}
         <div className={cn(
-          "grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-10 gap-3 md:gap-4 flex-1 overflow-y-auto pb-24 content-start",
+          "grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 md:gap-4 flex-1 overflow-y-auto pb-24 content-start",
           isAnswered && "pointer-events-none opacity-50 blur-[1px] transition-all duration-500"
         )}>
           {COLORS.map((color) => {
@@ -393,7 +393,7 @@ export default function Game() {
                 )}
 
                 {/* Tooltip on hover */}
-                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none border border-white/20">
+                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none border border-white/20 hidden md:block">
                   {color.name}
                 </div>
               </motion.button>

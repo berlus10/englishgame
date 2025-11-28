@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Card3D } from "@/components/ui/3d-card";
 import { User, Users, Shuffle, ArrowLeft } from "lucide-react";
-import background from "@assets/fond_site_1764295615694.png";
+import background from "@assets/generated_images/premium_dark_abstract_background_with_subtle_gradients_and_mesh_texture.png";
 
 export default function ModeSelect() {
   return (

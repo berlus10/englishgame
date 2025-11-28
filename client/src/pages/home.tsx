@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import background from "@assets/fond_site_1764295615694.png";
+import background from "@assets/generated_images/premium_dark_abstract_background_with_subtle_gradients_and_mesh_texture.png";
 import { useState, useEffect } from "react";
 
 export default function Home() {
